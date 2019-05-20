@@ -70,9 +70,6 @@
             android:textAllCaps="false"
             android:background="@android:color/transparent"/>
     </LinearLayout>
-
-        <Button
-            android:background="@android:"
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
