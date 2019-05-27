@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ViewNote"
+            android:label="@string/title_activity_view_note"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.ashanotepad.MainActivity" />
+        </activity>
+        <activity
             android:name=".AddNoteActivity"
             android:label="@string/title_activity_add_note"
             android:parentActivityName=".MainActivity"

@@ -17,6 +17,8 @@ public class AddNoteActivity extends AppCompatActivity {
     Button btnAddPhoto;
     Button btnAddVoiceNote;
     Button btnSave;
+    String title;
+    String note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +29,21 @@ public class AddNoteActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        etTitle=findViewById(R.id.etTitle);
-        etNote=findViewById(R.id.etNote);
-        btnAddPhoto=findViewById(R.id.btnAddPhoto);
-        btnAddVoiceNote=findViewById(R.id.btnAddVoiceNote);
-        btnSave=findViewById(R.id.btnSave);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        etTitle = findViewById(R.id.etTitle);
+        etNote = findViewById(R.id.etNote);
+        btnAddPhoto = findViewById(R.id.btnAddPhoto);
+        btnAddVoiceNote = findViewById(R.id.btnAddVoiceNote);
+        btnSave = findViewById(R.id.btnSave);
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        }}
+                        title=etTitle.getText().toString();
+                        note=etNote.getText().toString();
+                    }
 
-
-
-
-
+        });
+    }
+}

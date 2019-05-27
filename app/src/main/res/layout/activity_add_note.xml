@@ -39,6 +39,7 @@
             android:id="@+id/etNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_note_pink"
             android:hint="Note"
             android:lines="7"
             android:gravity="top|left"/>
@@ -70,6 +71,8 @@
             android:textAllCaps="false"
             android:background="@android:color/transparent"/>
     </LinearLayout>
+        <Button
+            android:background="@drawable/bg_button_pink"
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
