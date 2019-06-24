@@ -6,14 +6,26 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.ashanotepad.DataBase.DatabaseHelper;
+import com.example.ashanotepad.DataBase.Note;
+import com.example.ashanotepad.adapters.NotesAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity<item> extends AppCompatActivity {
+ListView listView;
+List<Note> noteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,29 +34,64 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab=findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getBaseContext(), AddNoteActivity.class));
+            public void onClick(View view) {
+                startActivity(new Intent(getBaseContext(),AddNoteActivity.class));
             }
         });
-        Button btn1=findViewById(R.id.btnViewNote);
-        btn1.setOnClickListener(new View.OnClickListener() {
+
+
+
+        listView=findViewById(R.id.ListView);
+    }
+
+    private void displayNotes() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(getBaseContext(), "notes", null, 1);
+        noteList = new ArrayList<Note>();
+        noteList = databaseHelper.getNotes();
+        Log.d("myNotes", "My database has" + noteList.size() + "notes");
+        NotesAdapter notesAdapter=new NotesAdapter(getBaseContext(),0,noteList);
+        listView.setAdapter(notesAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getBaseContext(),ViewNote.class));
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Note clickedNote= noteList.get(i);
+                Intent intent=new Intent(getBaseContext(),ViewNote.class);
+                intent.putExtra("NOTE_ID",clickedNote.getId());
+                startActivity(intent);
+
             }
         });
+    }
+public  void displayNames(){
+        List<String>nameList=new ArrayList<String>();
+        nameList.add("Osman Shariff");
+        nameList.add("Asha Ali");
+        nameList.add("Mustafa Ramadhan");
+        nameList.add("Joan Aluka");
+    ArrayAdapter<String>arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,nameList);
+    listView.setAdapter(arrayAdapter);
+
+}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displayNotes();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+}
 
 
-//        @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
+
 //    @Override
 //    public boolean onOptionsItemSelected MenuItem MenuItem android.view.MenuItem item;
 //        item;
@@ -61,5 +108,5 @@ public class MainActivity extends AppCompatActivity {
 //
 //        return super.onOptionsItemSelected(item);
 //    }
-    }
-            }
+
+

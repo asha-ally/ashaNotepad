@@ -18,25 +18,23 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+
+
+
     </android.support.design.widget.AppBarLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:layout_centerInParent="true"
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ListView"
 
-         />
-        <Button
-            android:background="@drawable/bg_button_pink"
-            android:id="@+id/btnViewNote"
-            android:text="View Note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            />
+
+
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
