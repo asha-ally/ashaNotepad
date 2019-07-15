@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddNoteActivity">
+    tools:context=".EditNote">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -44,40 +43,40 @@
             android:hint="Note"
             android:lines="7"
             android:gravity="top|left"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:drawableLeft="@drawable/ic_add_a_photo_pink_600_24dp"
-            android:drawablePadding="9dp"
-            android:id="@+id/btnAddPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Add Photo"
-            android:textAllCaps="false"
-            android:background="@android:color/transparent"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"/>
-
-        <Button
-            android:drawableLeft="@drawable/ic_keyboard_voice_pink_600_24dp"
-            android:drawablePadding="7dp"
-            android:id="@+id/btnAddVoiceNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Add Voice Note"
-            android:textAllCaps="false"
-            android:background="@android:color/transparent"/>
-    </LinearLayout>
-        <Button
-            android:background="@drawable/bg_button_pink"
-            android:id="@+id/btnSave"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Save"/>
+            android:orientation="horizontal">
+            <Button
+                android:drawableLeft="@drawable/ic_add_a_photo_pink_600_24dp"
+                android:drawablePadding="9dp"
+                android:id="@+id/btnAddPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Add Photo"
+                android:textAllCaps="false"
+                android:background="@android:color/transparent"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:drawableLeft="@drawable/ic_keyboard_voice_pink_600_24dp"
+                android:drawablePadding="7dp"
+                android:id="@+id/btnAddVoiceNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Add Voice Note"
+                android:textAllCaps="false"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+        <Button
+            android:background="@drawable/bg_button_pink"
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Update"/>
 
         <ImageView
             android:id="@+id/imgView"
@@ -88,6 +87,12 @@
 
 
 
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </android.support.design.widget.CoordinatorLayout>

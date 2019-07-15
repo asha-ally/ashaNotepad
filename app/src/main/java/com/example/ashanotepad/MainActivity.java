@@ -2,6 +2,8 @@ package com.example.ashanotepad;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,18 +16,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.ashanotepad.DataBase.DatabaseHelper;
 import com.example.ashanotepad.DataBase.Note;
 import com.example.ashanotepad.adapters.NotesAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity<item> extends AppCompatActivity {
 ListView listView;
 List<Note> noteList;
+ImageView fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +39,16 @@ List<Note> noteList;
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab=findViewById(R.id.fab);
+        listView=findViewById(R.id.ListView);
+        fab=findViewById(R.id.fab);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getBaseContext(),AddNoteActivity.class));
             }
         });
-
-
-
-        listView=findViewById(R.id.ListView);
     }
 
     private void displayNotes() {
@@ -65,6 +69,7 @@ List<Note> noteList;
             }
         });
     }
+
 public  void displayNames(){
         List<String>nameList=new ArrayList<String>();
         nameList.add("Osman Shariff");
@@ -88,6 +93,10 @@ public  void displayNames(){
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    static final String appDirectoryName = "Notepad";
+    static final File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES), appDirectoryName);
 }
 
 

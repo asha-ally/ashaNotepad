@@ -38,12 +38,23 @@
             >
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:alpha="1"
                 android:src="@drawable/scape"
+                android:visibility="visible"
+                />
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:layout_below="@+id/imageView"
+                android:id="@+id/imageViewB"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
                 />
 
             <TextView
@@ -93,6 +104,9 @@
                 android:layout_gravity="left"
                 android:src="@drawable/ic_baseline_gps_fixed_24px"
                 android:textAllCaps="false"/>
+
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,6 +157,7 @@
                 android:layout_weight="1"/>
 
             <Button
+                android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit"
