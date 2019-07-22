@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,35 +22,51 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ashanotepad.DataBase.DatabaseHelper;
 import com.example.ashanotepad.DataBase.Note;
 import com.example.ashanotepad.app.AppController;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import static com.example.ashanotepad.MainActivity.imageRoot;
 
 public class AddNoteActivity extends AppCompatActivity {
     private static ImageView bitmap;
-    EditText etTitle;
-    EditText etNote;
-    Button btnAddPhoto;
-    Button btnAddVoiceNote;
-    Button btnSave;
-    String title;
-    String noteText;
-    ImageView imageView;
+    private EditText etTitle;
+    private EditText etNote;
+    private Button btnAddPhoto;
+    private Button btnAddVoiceNote;
+    private Button btnSave;
+    private String title;
+    private String noteText;
+    private String imageUrl;
+    private ImageView imgView;
+    private String NOTES_API_URL="https://akirachixnotesapi.herokuapp.com/api/v1/notes";
+    private String TAG="NOTES_API_RESPONSE";
 
 
     private static final int CAPTURE_IMAGE_REQUEST_CODE = 500;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +82,7 @@ public class AddNoteActivity extends AppCompatActivity {
         btnAddPhoto = findViewById(R.id.btnAddPhoto);
         btnAddVoiceNote = findViewById(R.id.btnAddVoiceNote);
         btnSave = findViewById(R.id.btnSave);
-        imageView = findViewById(R.id.imageView);
+        imgView = findViewById(R.id.imgView);
 
 
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +101,10 @@ public class AddNoteActivity extends AppCompatActivity {
 
                 title = etTitle.getText().toString();
                 noteText = etNote.getText().toString();
-
-
-                Note note = new Note(title, noteText);
-                DatabaseHelper databaseHelper = new DatabaseHelper(getBaseContext(), "notes", null, 1);
-                long rows = databaseHelper.addNote(note);
-
-                Log.d("addNote", "The number of rows is " + rows);
-                finish();
+                imageUrl=imageRoot.getAbsolutePath();
+                postNote(title,noteText);
+//                sendBroadcast(new Intent(MediaStore.ACTION_IMAGE_CAPTURE,
+//                        Uri.parse("file://" + Environment.getExternalStorageDirectory())));
 
             }
 
@@ -104,24 +117,75 @@ public class AddNoteActivity extends AppCompatActivity {
         if (requestCode == CAPTURE_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle bundle=data.getExtras();
             Bitmap bitmap=(Bitmap)bundle.get("data");
-            imageView.setImageBitmap(bitmap);
+            imgView.setImageBitmap(bitmap);
 
         }
-////        private static void persistImage(Bitmap bitmap, String  name){
-////            File filesDir = getBaseContext().getFilesDir();
-////            File imageFile = new File(filesDir, name + ".jpg");
-////
-////            OutputStream os;
-////            try {
-////                os = new FileOutputStream(imageFile);
-////                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-////                os.flush();
-////                os.close();
-////            } catch (Exception e) {
-////                Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
-////            }
-//        }
+
+    }
+    private  void postNote(final String title, final String noteText){
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, NOTES_API_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Log.d(TAG,s);
+                try {
+                    JSONObject jsonObject=new JSONObject(s);
+                    int id=jsonObject.getInt("id");
+                    String title= jsonObject.getString("title");
+                    String noteText=jsonObject.getString("noteText");
+                    Note note = new Note(id,title,noteText,imageUrl);
+                    DatabaseHelper databaseHelper = new DatabaseHelper(getBaseContext(), "notes", null, 1);
+                    long rows=databaseHelper.addNote(note);
+                    finish();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.e(TAG,volleyError.getMessage());
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String>params=new HashMap<String, String>();
+                params.put("title",title);
+                params.put("noteText",noteText);
+                return params;
+            }
+        };
+        RequestQueue requestQueue= Volley.newRequestQueue(getBaseContext());
+        requestQueue.add(stringRequest);
+
     }
 
+
+    private void SaveImage(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images");
+        if (!myDir.exists()) {
+            myDir.mkdirs();
+        }
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-"+ n +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ())
+            file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

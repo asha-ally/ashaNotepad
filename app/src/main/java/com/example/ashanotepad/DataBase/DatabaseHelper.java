@@ -33,13 +33,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,noteText TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE notes(id INTEGER PRIMARY KEY ,title TEXT,noteText TEXT, imageUrl TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
-            sqLiteDatabase.execSQL("ALTER TABLE notes ADD COLUMN imageUrl INTEGER DEFAULT 0");
+            //sqLiteDatabase.execSQL("ALTER TABLE notes ADD COLUMN imageUrl INTEGER DEFAULT 0");
 
     }
 
@@ -47,9 +47,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long addNote(Note note) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put("id",note.getId());
         contentValues.put("title", note.getTitle());
         contentValues.put("noteText", note.getNoteText());
-        contentValues.put("images", "picha.hehehe");
+        contentValues.put("imageUrl", note.getImage());
         long insert = sqLiteDatabase.insert("notes", null, contentValues);
         sqLiteDatabase.close();
         return insert;
@@ -63,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Note> noteList = new ArrayList<Note>();
         String query = "SELECT*FROM notes";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        onUpgrade(sqLiteDatabase, 0,1);
+
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
 

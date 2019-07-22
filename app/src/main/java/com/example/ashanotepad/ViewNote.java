@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,6 +35,7 @@ ImageView imageView;
 Button btnEdit;
 NetworkImageView imageViewB;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ NetworkImageView imageViewB;
         imageViewB=findViewById(R.id.imageViewB);
 
 
-        displayNote("heist.jpeg");
+        displayNote();
 
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -84,11 +86,14 @@ NetworkImageView imageViewB;
         }
 
     }
-    public void displayNote( String deFile){
+    public void displayNote(){
         DatabaseHelper databaseHelper= new DatabaseHelper(getBaseContext(),"notes",null,1);
         Note note= databaseHelper.getNoteById(noteId);
         tvTitle.setText(note.getTitle());
         tvNoteText.setText(note.getNoteText());
+//        Bitmap bmp = BitmapFactory.decodeFile( imageRoot+ File.separator + "yourimage.jpg");
+//        imageView.setImageBitmap(bmp);
+
 
 
         Log.d("ehee", "your image is"+R.drawable.scape);
@@ -109,6 +114,9 @@ NetworkImageView imageViewB;
 
 
   }
+//    static final String appDirectoryName = "Notepad";
+//    static final File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
+//            Environment.DIRECTORY_PICTURES), appDirectoryName);
 
     }
 
