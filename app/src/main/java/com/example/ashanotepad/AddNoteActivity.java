@@ -94,6 +94,13 @@ public class AddNoteActivity extends AppCompatActivity {
                 final File image = new File(imageRoot, "image1.jpg");
             }
         });
+        btnAddVoiceNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(),VoiceRecord.class);
+                startActivity(intent);
+            }
+        });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
